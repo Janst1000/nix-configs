@@ -98,7 +98,7 @@ in
   users.users.jan = {
     isNormalUser = true;
     description = "Jan";
-    extraGroups = [ "networkmanager" "wheel" "docker"];
+    extraGroups = [ "networkmanager" "wheel" "docker" "tss"];
     packages = with pkgs; [];
   };
 
@@ -152,7 +152,7 @@ in
     hunspell
     hunspellDicts.de_DE
     hunspellDicts.en_US
-    vscode
+    vscode # set titlebar to custom on wayland
     grim
     slurp
     wl-clipboard
@@ -182,6 +182,7 @@ in
     openssl
     jetbrains.idea-ultimate
     unzip
+    tpm2-tools
   ];
 
   virtualisation.docker.enable = true;
@@ -202,7 +203,10 @@ in
   # swaylock needs this otherwise password fails even if correct
   security.pam.services.swaylock = {};
 
-
+  # TPM2 support
+  security.tpm2.enable = true;
+  security.tpm2.pkcs11.enable = true;  # expose /run/current-system/sw/lib/libtpm2_pkcs11.so
+  security.tpm2.tctiEnvironment.enable = true;  # TPM2TOOLS_TCTI and TPM2_PKCS11_TCTI env variables
 
   # Hyprland
   programs.hyprland = {
@@ -229,6 +233,7 @@ in
     # Set XDG_SESSION_TYPE to "wayland" if using Wayland
     XDG_SESSION_TYPE = "wayland";
   };
+  
 
 
   environment.etc = {
@@ -373,6 +378,12 @@ in
       vimAlias = true;
 
     };
+
+
+#    programs.vscode = {
+#      enable = true;
+#      userSettings = { "window.titleBarStyle" = "custom"; };
+#    };
     programs.zsh = {
       enable = true;
       enableAutosuggestions = true;
@@ -381,7 +392,7 @@ in
 
       shellAliases = {
         nixcfgswitch = "sudo nixos-rebuild switch";
-        nixcfgedit = "sudo nvim /etc/nixos/configuration.nix";
+        nixcfgedit = "sudo nvim ~/nix-configurations/configuration.nix";
       };
 
       profileExtra= ''
