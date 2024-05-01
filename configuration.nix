@@ -164,7 +164,7 @@ in
     unstable.appimagekit
     gcc
     imv
-    discord # broken maybe because of electron version
+    webcord
     mpd
     pavucontrol
     wlogout
@@ -177,7 +177,6 @@ in
     nvtop
     powertop
     unstable.obsidian
-    discordo
     wl-clipboard
     openssl
     jetbrains.idea-ultimate
