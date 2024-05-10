@@ -119,6 +119,7 @@ in
   nixpkgs.config.packageOverrides = pkgs: with pkgs; {
     unstable = import unstableTarball {
       config = config.nixpkgs.config;
+      #config.allowUnfree = true;
     };
   };
 
@@ -171,7 +172,7 @@ in
     xwaylandvideobridge
     zoom-us
     thunderbird
-    immersed-vr
+    #immersed-vr
     nvidia-offload
     glxinfo
     nvtop
