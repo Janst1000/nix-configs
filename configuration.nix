@@ -183,9 +183,15 @@ in
     jetbrains.idea-ultimate
     unzip
     tpm2-tools
+    jdk21
   ];
 
   virtualisation.docker.enable = true;
+
+  services.tlp.settings = {
+    INTEL_GPU_MIN_FREQ_ON_AC = 500;
+    INTEL_GPU_MIN_FREQ_ON_BAT = 500;
+  };
 
   # Custom Rofi Theme
   #customRofiTheme = /path/to/your/theme.rasi;
@@ -288,6 +294,7 @@ in
   packages = with pkgs; [
       font-awesome
       meslo-lgs-nf
+      orbitron
     ];
   };
 
@@ -432,7 +439,7 @@ colors
       timestr = "%R";
       datestr = "%a, %e.%B";
 
-      image = "~/result/share/wallpapers/nixos-wallpaper.png";
+      image = "~/Downloads/wallhaven-ex136k.jpg";
 
     # fade-in = "0.2";
 
