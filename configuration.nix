@@ -160,7 +160,7 @@ in
     pkgs.libsForQt5.qt5ct
     breeze-icons
     pywal
-    neofetch
+    fastfetch
     unstable.appimage-run
     unstable.appimagekit
     gcc
@@ -374,7 +374,8 @@ in
 
     programs.kitty = {
       enable = true;
-      theme = "Catppuccin-Macchiato";
+      #theme = "Catppuccin-Macchiato";
+      theme = "One Half Dark";
       extraConfig = ''
         font meslo-lgs-nf:size=12;
       '';
