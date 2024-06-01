@@ -168,7 +168,6 @@ in
     webcord
     mpd
     pavucontrol
-    wlogout
     xwaylandvideobridge
     zoom-us
     thunderbird
@@ -184,6 +183,7 @@ in
     unzip
     tpm2-tools
     jdk21
+    hyprlock
   ];
 
   virtualisation.docker.enable = true;
@@ -207,7 +207,7 @@ in
 
   # swaylock
   # swaylock needs this otherwise password fails even if correct
-  security.pam.services.swaylock = {};
+    security.pam.services.hyprlock = {};
 
   # TPM2 support
   security.tpm2.enable = true;
@@ -422,66 +422,99 @@ colors
         ];
       };
     };
+    programs.wlogout = {
+      enable = true;
+      layout = [
+        {
+            "label" = "lock";
+            "action" = "hyprlock -q";
+            "text" = "Lock";
+            "keybind" = "l";
+        }
+        {
+            "label" = "hibernate";
+            "action" = "systemctl hibernate";
+            "text" = "Hibernate";
+            "keybind" = "h";
+        }
+        {
+            "label" = "logout";
+            "action" = "loginctl terminate-user $USER";
+            "text" = "Logout";
+            "keybind" = "e";
+        }
+        {
+            "label" = "shutdown";
+            "action" = "systemctl poweroff";
+            "text" = "Shutdown";
+            "keybind" = "s";
+        }
+        {
+            "label" = "suspend";
+            "action" = "systemctl suspend & hyprlock -q";
+            "text" = "Suspend";
+            "keybind" = "u";
+        }
+        {
+            "label" = "reboot";
+            "action" = "systemctl reboot";
+            "text" = "Reboot";
+            "keybind" = "r";
+        }
+      ];
+      style = ''
+      * {
+        background-image: none;
+        box-shadow: none;
+      }
 
+      window {
+        background-color: rgba(12, 12, 12, 0.9);
+      }
 
-  # swaylock config with swaylockeffects
-  programs.swaylock = {
-    enable = true;
+      button {
+          border-radius: 0;
+          border-color: black;
+          color: #FFFFFF;
+        background-color: #1E1E1E;
+        border-style: solid;
+        border-width: 1px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 25%;
+      }
 
-    package = pkgs.swaylock-effects;
-    settings = {
-      ignore-empty-password = true;
-      disable-caps-lock-text = true;
-      font = "meslo-lgs-nf";
-    # grace = 300;	# time before user gets asked for password by swaylock
+      button:focus, button:active, button:hover {
+        background-color: #3700B3;
+        outline-style: none;
+      }
 
-      clock = true;
-      timestr = "%R";
-      datestr = "%a, %e.%B";
+      #lock {
+          background-image: image(url("/home/jan/.nix-profile/share/wlogout/icons/lock.png"), url("/home/jan/.nix-profile/share/wlogout/icons/lock.png"));
+      }
 
-      image = "~/Downloads/wallhaven-ex136k.jpg";
+      #logout {
+          background-image: image(url("/home/jan/.nix-profile/share/wlogout/icons/logout.png"), url("/home/jan/.nix-profile/share/wlogout/icons/logout.png"));
+      }
 
-    # fade-in = "0.2";
+      #suspend {
+          background-image: image(url("/home/jan/.nix-profile/share/wlogout/icons/suspend.png"), url("/home/jan/.nix-profile/share/wlogout/icons/suspend.png"));
+      }
 
-      effect-blur = "10x2";
-      effect-scale = "0.1";
+      #hibernate {
+          background-image: image(url("/home/jan/.nix-profile/share/wlogout/icons/hibernate.png"), url("/home/jan/.nix-profile/share/wlogout/icons/hibernate.png"));
+      }
 
-      indicator = true;
-      indicator-radius = 120;
-      indicator-thickness = 20;
-      indicator-caps-lock = true;
+      #shutdown {
+          background-image: image(url("/home/jan/.nix-profile/share/wlogout/icons/shutdown.png"), url("/home/jan/.nix-profile/share/wlogout/icons/shutdown.png"));
+      }
 
-      key-hl-color = "#8aadf4";
-      bs-hl-color = "#ed8796";
-      caps-lock-key-hl-color = "#f5a97f";
-      caps-lock-bs-hl-color = "#ed8796";
+      #reboot {
+          background-image: image(url("/home/jan/.nix-profile/share/wlogout/icons/reboot.png"), url("/home/jan/.nix-profile/share/wlogout/icons/reboot.png"));
+      }
 
-      separator-color = "#181926";
-
-      inside-color = "#24273a";
-      inside-clear-color = "#24273a";
-      inside-caps-lock-color = "#24273a";
-      inside-ver-color = "#24273a";
-      inside-wrong-color = "#24273a";
-
-      ring-color = "#1e2030";
-      ring-clear-color = "#8aadf4";
-      ring-caps-lock-color = "231f20D9";
-      ring-ver-color = "#1e2030";
-      ring-wrong-color = "#ed8796";
-
-      line-color = "#8aadf4";
-      line-clear-color = "#8aadf4";
-      line-caps-lock-color = "#f5a97f";
-      line-ver-color = "#181926";
-      line-wrong-color = "#ed8796";
-
-      text-color = "#8aadf4";
-      text-clear-color = "#24273a";
-      text-caps-lock-color = "#f5a97f";
-      text-ver-color = "#24273a";
-      text-wrong-color = "#24273a";
-      };
+      '';
     };
-  };
-} 
+
+  }; 
+}
