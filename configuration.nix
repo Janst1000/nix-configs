@@ -30,6 +30,7 @@ in
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.resumeDevice = "/dev/disk/by-uuid/6da1db9e-3b4b-4060-bcad-b6d37ad2a1ef";
 
   # NTFS support
   boot.supportedFilesystems = ["ntfs"];
@@ -77,8 +78,8 @@ in
   # Configure keymap in X11
   services.xserver = {
     enable = true;
-    layout = "de";
-    xkbVariant = "";
+    xkb.layout = "de";
+    xkb.variant = "";
 #    displayManager.sessionCommands = ''
 #      export GTK_THEME=Breeze-Dark
 #    '';
@@ -184,6 +185,9 @@ in
     tpm2-tools
     jdk21
     hyprlock
+    element-desktop-wayland
+    gparted
+    lxqt.lxqt-policykit
   ];
 
   virtualisation.docker.enable = true;
@@ -208,6 +212,8 @@ in
   # swaylock
   # swaylock needs this otherwise password fails even if correct
     security.pam.services.hyprlock = {};
+    security.polkit.enable = true;
+    #services.lxqt-policykit.enable = true;
 
   # TPM2 support
   security.tpm2.enable = true;
@@ -305,7 +311,16 @@ in
   };
   users.defaultUserShell = pkgs.zsh;
 
-  programs.thunar.enable =true;
+  programs.xfconf.enable = true;
+
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-media-tags-plugin
+      thunar-volman
+    ];
+  };
 
   # Printing with CUPS
   services.printing.enable = true;
