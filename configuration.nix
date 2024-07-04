@@ -99,7 +99,7 @@ in
   users.users.jan = {
     isNormalUser = true;
     description = "Jan";
-    extraGroups = [ "networkmanager" "wheel" "docker" "tss"];
+    extraGroups = [ "networkmanager" "wheel" "docker" "tss" "wireshark"];
     packages = with pkgs; [];
   };
 
@@ -175,7 +175,7 @@ in
     #immersed-vr
     nvidia-offload
     glxinfo
-    nvtop
+    nvtopPackages.full
     powertop
     unstable.obsidian
     wl-clipboard
@@ -188,6 +188,7 @@ in
     element-desktop-wayland
     gparted
     lxqt.lxqt-policykit
+    wireshark
   ];
 
   virtualisation.docker.enable = true;
@@ -196,6 +197,9 @@ in
     INTEL_GPU_MIN_FREQ_ON_AC = 500;
     INTEL_GPU_MIN_FREQ_ON_BAT = 500;
   };
+
+  programs.wireshark.enable = true;
+  
 
   # Custom Rofi Theme
   #customRofiTheme = /path/to/your/theme.rasi;
@@ -247,7 +251,7 @@ in
   
 
 
-  environment.etc = {
+/*  environment.etc = {
     "xdg/gtk-2.0/gtkrc".text = "gtk-error-bell=0";
     "xdg/gtk-3.0/settings.ini".text = ''
       [Settings]
@@ -258,7 +262,7 @@ in
       gtk-theme=Breeze-Dark
     '';
   };
-
+*/
 
   hardware = {
     opengl.enable = true;
@@ -368,13 +372,8 @@ in
     gtk = {
       enable = true;
       theme = {
-        name = "Catppuccin-Macchiato-Compact-Blue-Dark";
-        package = pkgs.catppuccin-gtk.override {
-          accents = [ "blue" ];
-          size = "compact";
-          tweaks = [ "rimless" "black" ];
-          variant = "macchiato";
-        };
+        name = "Nordic";
+        package = pkgs.nordic;
       };
     };
 
@@ -408,7 +407,7 @@ in
 #    };
     programs.zsh = {
       enable = true;
-      enableAutosuggestions = true;
+      autosuggestion.enable = true;
       enableCompletion = true;
       dotDir = ".config/zsh";
 
