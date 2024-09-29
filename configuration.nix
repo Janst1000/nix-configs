@@ -99,7 +99,7 @@ in
   users.users.jan = {
     isNormalUser = true;
     description = "Jan";
-    extraGroups = [ "networkmanager" "wheel" "docker" "tss" "wireshark"];
+    extraGroups = [ "networkmanager" "wheel" "docker" "tss" "wireshark" "scanner" "lp"];
     packages = with pkgs; [];
   };
 
@@ -185,10 +185,12 @@ in
     tpm2-tools
     jdk21
     hyprlock
+    hypridle
     element-desktop-wayland
     gparted
     lxqt.lxqt-policykit
     wireshark
+    gnome.simple-scan
   ];
 
   virtualisation.docker.enable = true;
@@ -288,7 +290,13 @@ in
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
     enableRedistributableFirmware = true;
+    sane = {
+    	enable = true;
+	extraBackends = [ pkgs.sane-airscan ];
+    };
   };
+
+  services.udev.packages = [ pkgs.sane-airscan ];
 
   services.blueman.enable = true;
   
