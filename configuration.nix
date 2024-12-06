@@ -197,6 +197,7 @@ in
     simple-scan
     postman
     gdk
+    hyprcursor
   ];
 
   virtualisation.docker.enable = true;
@@ -394,12 +395,24 @@ in
     home.packages = with pkgs ; [ 
       htop
     ];
+
+    home.pointerCursor = {
+      name = "Bibata-Modern-Ice";
+      package = pkgs.bibata-cursors;
+      size = 48;
+      gtk.enable = true;
+      x11.enable = true;
+      x11.defaultCursor = "Bibata-Modern-Ice";
+    };
+
     gtk = {
       enable = true;
       theme = {
         name = "Nordic";
         package = pkgs.nordic;
       };
+      cursorTheme.name = "Bibata-Modern-Ice";
+      cursorTheme.size = 24;
     };
 
 
