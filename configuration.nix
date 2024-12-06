@@ -19,6 +19,10 @@ let
   unstableTarball =
     fetchTarball
       https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+  
+  gdk = pkgs.google-cloud-sdk.withExtraComponents( with pkgs.google-cloud-sdk.components; [
+    gke-gcloud-auth-plugin
+  ]);
 in
 {
   imports =
@@ -190,7 +194,9 @@ in
     gparted
     lxqt.lxqt-policykit
     wireshark
-    gnome.simple-scan
+    simple-scan
+    postman
+    gdk
   ];
 
   virtualisation.docker.enable = true;
@@ -198,6 +204,17 @@ in
   services.tlp.settings = {
     INTEL_GPU_MIN_FREQ_ON_AC = 500;
     INTEL_GPU_MIN_FREQ_ON_BAT = 500;
+
+    CPU_SCALING_GOVERNOR_ON_AC = "performance";
+    CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+    CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+    CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+
+    CPU_MIN_PERF_ON_AC = 0;
+    CPU_MAX_PERF_ON_AC = 100;
+    CPU_MIN_PERF_ON_BAT = 0;
+    CPU_MAX_PERF_ON_BAT =50;
   };
 
   programs.wireshark.enable = true;
@@ -267,7 +284,7 @@ in
 */
 
   hardware = {
-    opengl.enable = true;
+    graphics.enable = true;
     nvidia = {
       modesetting.enable = true;
       powerManagement.enable = true;
@@ -339,11 +356,11 @@ in
 
 
   # Sound
-  sound.enable = true;
-  sound.mediaKeys = {
-    enable = true;
-    volumeStep = "5%";
-  };
+  #sound.enable = true;
+  #sound.mediaKeys = {
+  #  enable = true;
+  #  volumeStep = "5%";
+  #};
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
