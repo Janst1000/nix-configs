@@ -22,6 +22,7 @@ let
   
   gdk = pkgs.google-cloud-sdk.withExtraComponents( with pkgs.google-cloud-sdk.components; [
     gke-gcloud-auth-plugin
+    cloud-firestore-emulator
   ]);
 in
 {
@@ -142,7 +143,7 @@ in
     libnotify
     kitty
     rofi-wayland
-    nerdfonts
+    #nerdfonts
     firefox
     zsh
     zplug
@@ -162,8 +163,8 @@ in
     grim
     slurp
     wl-clipboard
-    pkgs.libsForQt5.qt5ct
-    breeze-icons
+    #pkgs.libsForQt5.qt5ct
+    kdePackages.breeze-icons
     pywal
     fastfetch
     unstable.appimage-run
@@ -173,7 +174,7 @@ in
     webcord
     mpd
     pavucontrol
-    xwaylandvideobridge
+    kdePackages.xwaylandvideobridge
     zoom-us
     thunderbird
     #immersed-vr
@@ -184,13 +185,13 @@ in
     unstable.obsidian
     wl-clipboard
     openssl
-    jetbrains.idea-ultimate
+    unstable.jetbrains.idea-ultimate
     unzip
     tpm2-tools
     jdk21
     hyprlock
     hypridle
-    element-desktop-wayland
+    #element-desktop-wayland
     gparted
     lxqt.lxqt-policykit
     wireshark
@@ -198,6 +199,14 @@ in
     postman
     gdk
     hyprcursor
+    jdk17
+    maven
+    discord
+    mangohud
+    protonup-qt
+    lutris
+    bottles
+    heroic
   ];
 
   virtualisation.docker.enable = true;
@@ -352,6 +361,11 @@ in
     ];
   };
 
+  # Games
+  programs.steam.enable = true;
+  programs.steam.gamescopeSession.enable = true;
+  programs.gamemode.enable = true;
+
   # Printing with CUPS
   services.printing.enable = true;
 
@@ -394,6 +408,7 @@ in
     home.stateVersion = "23.11";
     home.packages = with pkgs ; [ 
       htop
+      #kitty-themes
     ];
 
     home.pointerCursor = {
@@ -426,7 +441,7 @@ in
     programs.kitty = {
       enable = true;
       #theme = "Catppuccin-Macchiato";
-      theme = "One Half Dark";
+      themeFile = "OneHalfDark";
       extraConfig = ''
         font meslo-lgs-nf:size=12;
       '';
@@ -458,7 +473,7 @@ in
         setop interactivecomments
       '';
 
-      initExtra = ''
+      initContent = ''
 # ##include p10k config manually. Home Manager cannot set and save it
 # ##it was moved to /etc/nixos/p10k
 source /etc/nixos/p10k/.p10k.zsh
