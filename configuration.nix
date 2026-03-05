@@ -88,14 +88,13 @@ in
 #    displayManager.sessionCommands = ''
 #      export GTK_THEME=Breeze-Dark
 #    '';
-    displayManager.gdm = {
-      enable = true;
-      wayland = true;
-    };
     videoDrivers = ["nvidia"];
   };
 
-
+  services.displayManager.gdm = {
+      enable = true;
+      wayland = true;
+    };
 
   # Configure console keymap
   console.keyMap = "de";
@@ -142,14 +141,13 @@ in
     dunst
     libnotify
     kitty
-    rofi-wayland
+    rofi
     #nerdfonts
     firefox
     zsh
     zplug
     zsh-powerlevel10k
     meslo-lgs-nf
-    thefuck
     git
     swww
     networkmanagerapplet
@@ -174,12 +172,12 @@ in
     webcord
     mpd
     pavucontrol
-    kdePackages.xwaylandvideobridge
+    #kdePackages.xwaylandvideobridge apparently it's not needed anymore to make screenshare work
     zoom-us
     thunderbird
     #immersed-vr
     nvidia-offload
-    glxinfo
+    mesa-demos
     nvtopPackages.full
     powertop
     unstable.obsidian
@@ -430,11 +428,12 @@ in
       cursorTheme.size = 24;
     };
 
-
     programs.git = {
       enable = true;
-      userName = "Janst1000";
-      userEmail = "janst1000@gmail.com";
+      settings = {
+        user.name = "Janst1000";
+        user.email = "janst1000@gmail.com";
+      };
       #safeDirectory= "/etc/nixos";
     };
 
@@ -462,7 +461,7 @@ in
       enable = true;
       autosuggestion.enable = true;
       enableCompletion = true;
-      dotDir = ".config/zsh";
+      dotDir = "/home/${user}/.config/zsh";
 
       shellAliases = {
         nixcfgswitch = "sudo nixos-rebuild switch";
