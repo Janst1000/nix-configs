@@ -457,37 +457,30 @@ in
 #      enable = true;
 #      userSettings = { "window.titleBarStyle" = "custom"; };
 #    };
-    programs.zsh = {
-      enable = true;
-      autosuggestion.enable = true;
-      enableCompletion = true;
-      dotDir = "/home/${user}/.config/zsh";
-
-      shellAliases = {
-        nixcfgswitch = "sudo nixos-rebuild switch";
-        nixcfgedit = "sudo nvim ~/nix-configurations/configuration.nix";
-      };
-
-      profileExtra= ''
-        setop interactivecomments
-      '';
-
-      initContent = ''
-# ##include p10k config manually. Home Manager cannot set and save it
-# ##it was moved to /etc/nixos/p10k
-source /etc/nixos/p10k/.p10k.zsh
-# Theming Section
-autoload -U colors
-colors
-      '';
-      zplug = {
-        enable = true;
-        plugins = [
-          { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1]; }
-        # Install with additional options #refer to zplug readme
-        ];
-      };
+  programs.zsh = {
+    enable = true;
+    autosuggestion.enable = true;
+    enableCompletion = true;
+    dotDir = "/home/${user}/.config/zsh";
+    shellAliases = {
+      nixcfgswitch = "sudo nixos-rebuild switch";
+      nixcfgedit = "sudo nvim ~/nix-configurations/configuration.nix";
     };
+    profileExtra = ''
+      setopt interactivecomments
+    '';
+    initContent = ''
+      # Enable p10k instant prompt
+      if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+        source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+      fi
+
+      source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+      source /etc/nixos/p10k/.p10k.zsh
+      autoload -U colors
+      colors
+    '';
+  };
     programs.wlogout = {
       enable = true;
       layout = [
