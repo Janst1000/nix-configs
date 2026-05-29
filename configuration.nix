@@ -149,7 +149,7 @@ in
     zsh-powerlevel10k
     meslo-lgs-nf
     git
-    swww
+    hyprpaper
     networkmanagerapplet
     pamixer
     brightnessctl
@@ -205,6 +205,8 @@ in
     lutris
     bottles
     heroic
+    nextcloud-client
+    unstable.zotero
   ];
 
   virtualisation.docker.enable = true;
@@ -263,33 +265,16 @@ in
   environment.sessionVariables = {
     WLR_NO_HARDWARE_CURSORS = "1";
     NIXOS_OZONE_WL = "1";
+    GTKq = "Nordic:dark";
   };
 
   environment.variables = {
-    # Set the Qt platform theme to enable dark mode for Qt applications
     QT_QPA_PLATFORMTHEME = "qt5ct";
-
-#    # Set the GTK theme to Breeze-Dark
-#    GTK_THEME = "Breeze-Dark";
-
-    # Set XDG_SESSION_TYPE to "wayland" if using Wayland
     XDG_SESSION_TYPE = "wayland";
+    GTK_THEME = "Nordic:dark";
   };
   
 
-
-/*  environment.etc = {
-    "xdg/gtk-2.0/gtkrc".text = "gtk-error-bell=0";
-    "xdg/gtk-3.0/settings.ini".text = ''
-      [Settings]
-      gtk-theme=Breeze-Dark
-    '';
-    "xdg/gtk-4.0/settings.ini".text = ''
-      [Settings]
-      gtk-theme=Breeze-Dark
-    '';
-  };
-*/
 
   hardware = {
     graphics.enable = true;
@@ -337,6 +322,7 @@ in
       font-awesome
       meslo-lgs-nf
       orbitron
+      nerd-fonts.jetbrains-mono
     ];
   };
 
@@ -426,6 +412,12 @@ in
       };
       cursorTheme.name = "Bibata-Modern-Ice";
       cursorTheme.size = 24;
+      gtk3.extraConfig = {
+        gtk-application-prefer-dark-theme = true;
+      };
+      gtk4.extraConfig = {
+        gtk-application-prefer-dark-theme = true;
+      };
     };
 
     programs.git = {
