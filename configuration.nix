@@ -5,7 +5,7 @@
 ##############################
 # TODO: Set GDK Theme to darkmode :(
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 let
   user = "jan";
@@ -16,9 +16,11 @@ let
     export __VK_LAYER_NV_optimus=NVIDIA_only
     exec "$@"
   '';
-  unstableTarball =
-    fetchTarball
-      https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+  
+  unstable = import inputs.nixpkgs-unstable {
+    system = "x86_64-linux";
+    config.allowUnfree = true;
+  };
   
   gdk = pkgs.google-cloud-sdk.withExtraComponents( with pkgs.google-cloud-sdk.components; [
     gke-gcloud-auth-plugin
@@ -29,7 +31,7 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <home-manager/nixos>
+      # <home-manager/nixos>
     ];
 
   # Bootloader.
@@ -121,12 +123,6 @@ in
   #};
  
  
-  nixpkgs.config.packageOverrides = pkgs: with pkgs; {
-    unstable = import unstableTarball {
-      config = config.nixpkgs.config;
-      #config.allowUnfree = true;
-    };
-  };
 
   # Allow Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes"];  
@@ -166,7 +162,7 @@ in
     pywal
     fastfetch
     unstable.appimage-run
-    unstable.appimagekit
+    #unstable.appimagekit
     gcc
     imv
     webcord
@@ -183,7 +179,7 @@ in
     unstable.obsidian
     wl-clipboard
     openssl
-    unstable.jetbrains.idea-ultimate
+    unstable.jetbrains.idea
     unzip
     tpm2-tools
     jdk21
