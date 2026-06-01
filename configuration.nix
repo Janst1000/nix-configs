@@ -101,6 +101,9 @@ in
   # Configure console keymap
   console.keyMap = "de";
 
+  # Keyring to store nextcloud login
+  services.gnome.gnome-keyring.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.jan = {
     isNormalUser = true;
@@ -153,7 +156,7 @@ in
     hunspell
     hunspellDicts.de_DE
     hunspellDicts.en_US
-    vscode # set titlebar to custom on wayland
+    unstable.vscode # set titlebar to custom on wayland
     grim
     slurp
     wl-clipboard
@@ -203,6 +206,9 @@ in
     heroic
     nextcloud-client
     unstable.zotero
+    texliveFull
+    unstable.texstudio
+    localsend
   ];
 
   virtualisation.docker.enable = true;
@@ -241,7 +247,9 @@ in
   # swaylock
   # swaylock needs this otherwise password fails even if correct
     security.pam.services.hyprlock = {};
+    security.pam.services.gdm.enableGnomeKeyring = true;
     security.polkit.enable = true;
+    
     #services.lxqt-policykit.enable = true;
 
   # TPM2 support
@@ -315,7 +323,7 @@ in
 
   fonts = {
   packages = with pkgs; [
-      font-awesome
+      unstable.font-awesome
       meslo-lgs-nf
       orbitron
       nerd-fonts.jetbrains-mono
@@ -328,6 +336,7 @@ in
     histSize = 10000;
     histFile = "$config.xdg.dataHome/zsh/history";
   };
+  
   users.defaultUserShell = pkgs.zsh;
 
   programs.xfconf.enable = true;
@@ -370,8 +379,8 @@ in
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 53317 ];
+  networking.firewall.allowedUDPPorts = [ 53317 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
@@ -467,6 +476,9 @@ in
       source /etc/nixos/p10k/.p10k.zsh
       autoload -U colors
       colors
+      # Word jumping with Ctrl+Arrow
+      bindkey "^[[1;5C" forward-word
+      bindkey "^[[1;5D" backward-word
     '';
   };
     programs.wlogout = {
@@ -563,5 +575,6 @@ in
       '';
     };
 
-  }; 
+  };
+  services.playerctld.enable = true;
 }

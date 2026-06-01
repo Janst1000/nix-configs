@@ -8,9 +8,13 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    waybar-module-music = {
+      url = "github:Andeskjerf/waybar-module-music";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, waybar-module-music, ... }@inputs:
   {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -18,6 +22,7 @@
       modules = [
         ./configuration.nix
         home-manager.nixosModules.home-manager
+        waybar-module-music.nixosModules.waybar-module-music
       ];
     };
   };
