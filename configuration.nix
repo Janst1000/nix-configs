@@ -96,7 +96,6 @@ in
 
   services.displayManager.gdm = {
       enable = true;
-      wayland = true;
     };
 
   # Configure console keymap
@@ -213,6 +212,7 @@ in
     localsend
     waybar-module-music
     jq
+    btop
   ];
 
   virtualisation.docker.enable = true;
@@ -270,6 +270,7 @@ in
   # Hyprland
   programs.hyprland = {
     enable = true;
+    withUWSM = true;
     xwayland.enable = true;
     
   };
@@ -403,187 +404,5 @@ in
   system.stateVersion = "23.11"; # Did you read the comment?
 
   # Home-Manager
-  home-manager.users.jan = {
-    home.stateVersion = "23.11";
-    home.packages = with pkgs ; [ 
-      htop
-      #kitty-themes
-    ];
-    home.pointerCursor = {
-      name = "Bibata-Modern-Ice";
-      package = pkgs.bibata-cursors;
-      size = 48;
-      gtk.enable = true;
-      x11.enable = true;
-      x11.defaultCursor = "Bibata-Modern-Ice";
-    };
-
-    gtk = {
-      enable = true;
-      theme = {
-        name = "Nordic";
-        package = pkgs.nordic;
-      };
-      cursorTheme.name = "Bibata-Modern-Ice";
-      cursorTheme.size = 24;
-      gtk3.extraConfig = {
-        gtk-application-prefer-dark-theme = true;
-      };
-      gtk4.extraConfig = {
-        gtk-application-prefer-dark-theme = true;
-      };
-    };
-
-    programs.git = {
-      enable = true;
-      settings = {
-        user.name = "Janst1000";
-        user.email = "janst1000@gmail.com";
-      };
-      #safeDirectory= "/etc/nixos";
-    };
-
-    programs.kitty = {
-      enable = true;
-      #theme = "Catppuccin-Macchiato";
-      themeFile = "OneHalfDark";
-      extraConfig = ''
-        font meslo-lgs-nf:size=12;
-      '';
-    };
-
-    programs.neovim = {
-      enable = true;
-      vimAlias = true;
-
-    };
-
-
-#    programs.vscode = {
-#      enable = true;
-#      userSettings = { "window.titleBarStyle" = "custom"; };
-#    };
-  programs.zsh = {
-    enable = true;
-    autosuggestion.enable = true;
-    enableCompletion = true;
-    dotDir = "/home/${user}/.config/zsh";
-    shellAliases = {
-      nixcfgswitch = "sudo nixos-rebuild switch";
-      nixcfgedit = "sudo nvim ~/nix-configurations/configuration.nix";
-    };
-    profileExtra = ''
-      setopt interactivecomments
-    '';
-    initContent = ''
-      # Enable p10k instant prompt
-      if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-        source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-      fi
-
-      source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-      source /etc/nixos/p10k/.p10k.zsh
-      autoload -U colors
-      colors
-      # Word jumping with Ctrl+Arrow
-      bindkey "^[[1;5C" forward-word
-      bindkey "^[[1;5D" backward-word
-    '';
-  };
-    programs.wlogout = {
-      enable = true;
-      layout = [
-        {
-            "label" = "lock";
-            "action" = "hyprlock -q";
-            "text" = "Lock";
-            "keybind" = "l";
-        }
-        {
-            "label" = "hibernate";
-            "action" = "systemctl hibernate";
-            "text" = "Hibernate";
-            "keybind" = "h";
-        }
-        {
-            "label" = "logout";
-            "action" = "loginctl terminate-user $USER";
-            "text" = "Logout";
-            "keybind" = "e";
-        }
-        {
-            "label" = "shutdown";
-            "action" = "systemctl poweroff";
-            "text" = "Shutdown";
-            "keybind" = "s";
-        }
-        {
-            "label" = "suspend";
-            "action" = "systemctl suspend & hyprlock -q";
-            "text" = "Suspend";
-            "keybind" = "u";
-        }
-        {
-            "label" = "reboot";
-            "action" = "systemctl reboot";
-            "text" = "Reboot";
-            "keybind" = "r";
-        }
-      ];
-      style = ''
-      * {
-        background-image: none;
-        box-shadow: none;
-      }
-
-      window {
-        background-color: rgba(12, 12, 12, 0.9);
-      }
-
-      button {
-          border-radius: 0;
-          border-color: black;
-          color: #FFFFFF;
-        background-color: #1E1E1E;
-        border-style: solid;
-        border-width: 1px;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 25%;
-      }
-
-      button:focus, button:active, button:hover {
-        background-color: #3700B3;
-        outline-style: none;
-      }
-
-      #lock {
-          background-image: image(url("/home/jan/.nix-profile/share/wlogout/icons/lock.png"), url("/home/jan/.nix-profile/share/wlogout/icons/lock.png"));
-      }
-
-      #logout {
-          background-image: image(url("/home/jan/.nix-profile/share/wlogout/icons/logout.png"), url("/home/jan/.nix-profile/share/wlogout/icons/logout.png"));
-      }
-
-      #suspend {
-          background-image: image(url("/home/jan/.nix-profile/share/wlogout/icons/suspend.png"), url("/home/jan/.nix-profile/share/wlogout/icons/suspend.png"));
-      }
-
-      #hibernate {
-          background-image: image(url("/home/jan/.nix-profile/share/wlogout/icons/hibernate.png"), url("/home/jan/.nix-profile/share/wlogout/icons/hibernate.png"));
-      }
-
-      #shutdown {
-          background-image: image(url("/home/jan/.nix-profile/share/wlogout/icons/shutdown.png"), url("/home/jan/.nix-profile/share/wlogout/icons/shutdown.png"));
-      }
-
-      #reboot {
-          background-image: image(url("/home/jan/.nix-profile/share/wlogout/icons/reboot.png"), url("/home/jan/.nix-profile/share/wlogout/icons/reboot.png"));
-      }
-
-      '';
-    };
-
-  };
-  services.playerctld.enable = true;
+  home-manager.users.jan = import ./home.nix;
 }
