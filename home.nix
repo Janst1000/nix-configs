@@ -28,6 +28,7 @@
     cursorTheme.size = 24;
     gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
     gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
+    gtk4.theme = config.gtk.theme;
   };
 
   programs.git = {
@@ -153,6 +154,7 @@
     package = null;         # Hyprland kommt aus programs.hyprland (configuration.nix)
     portalPackage = null;   # xdg-desktop-portal-hyprland ebenso
     systemd.enable = false; # UWSM übernimmt die Session, nicht Home-Manager
+    configType = "hyprlang"; # Hyprland-Konfiguration in Hyprland-Syntax
     extraConfig = ''
       source = ~/.config/hypr/monitors.conf
     '';
