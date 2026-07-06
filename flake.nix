@@ -22,7 +22,9 @@
       modules = [
         ./configuration.nix
         home-manager.nixosModules.home-manager
-        waybar-module-music.nixosModules.waybar-module-music
+        ({...}: {
+          nixpkgs.overlays = [ waybar-module-music.overlays.default ];
+        })
       ];
     };
   };
