@@ -31,6 +31,7 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./rettij.nix
       # <home-manager/nixos>
     ];
 
@@ -215,15 +216,6 @@ in
   ];
 
   virtualisation.docker.enable = true;
-
-  #rettij kubernetes setup
-  services.k3s = {
-    enable = true;
-    role = "server";
-    extraFlags = "--disable=traefik --disable=servicelb --disable=metrics-server --write-kubeconfig-mode=644";
-  };
-  boot.kernelModules = [ "vxlan" "br_netfilter" ];
-  programs.nix-ld.enable = true;   # safety net für pip-wheels
 
   services.tlp.settings = {
     INTEL_GPU_MIN_FREQ_ON_AC = 500;
